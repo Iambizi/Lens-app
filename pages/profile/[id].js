@@ -26,6 +26,7 @@ const Profile = ()=>{
 
             const publicationData = await client.query(getPublications,{id}).toPromise()
             console.log({publicationData})
+            setPubs(publicationData.data.publications.items)
         } catch(err){
             console.log({err})
         }
@@ -49,6 +50,13 @@ const Profile = ()=>{
             <p>{profile?.bio}</p>
             <p>Followers: {profile?.stats?.totalFollowers}</p>
             <p>Following: {profile?.stats?.totalFollowing}</p>
+        </div>
+        <div>
+            {pubs.map((pub,index)=>(
+                <div key={index} style={{padding: '20px', borderTop: '1px solid #ededed' }}>
+                    {pub.metadata.content}
+                </div>
+            ))}
         </div>
         </>
     )
