@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { client, recommendProfiles} from '../api';
+import { client, recommendProfiles} from './api/queries';
 import Link from 'next/link';
 import Image from "next/image";
 
@@ -30,13 +30,13 @@ export default function Home() {
               {
               profile.picture ?(
                 <Image 
-                src={profile.picture.original.url}
+                src={profile?.picture?.original?.url}
                 width="60px"
                 height="60px"
                 >
                 </Image>
               ) : 
-              (<div></div>)
+              (<div style={{width: '60px', height: '60px', backgroundColor: 'black'}}></div>)
               }
               <h4>{profile.handle}</h4>
               <p>{profile.bio}</p>
