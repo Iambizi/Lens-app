@@ -40,10 +40,7 @@ const Profile = ()=>{
         const accounts = await window.ethereum.request({
             method: "eth_requestAccounts"
         });
-
-        console.log(accounts)
         console.log({accounts})
-
     }
 
     async function followUser(){
@@ -68,7 +65,7 @@ const Profile = ()=>{
 
     return(
         <>
-        <button style={{marginRight:"10px"}} onClick={connect}>Connect</button>
+        <button onClick={connect}>Connect</button>
         {profile?.picture ? (<>
         <Image 
             width="200px"
