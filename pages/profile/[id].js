@@ -2,7 +2,11 @@ import { useRouter } from "next/router";
 import { client, getProfiles, getPublications } from '../api/queries';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import ABI from "../../abi.json";
+import { ethers } from "ethers";
 
+
+const address = "0xDb46d1Dc155634FbC732f92E853b10B288AD5a1d";
 
 const Profile = ()=>{
 
@@ -32,10 +36,39 @@ const Profile = ()=>{
         }
     }
 
+    async function connect(){
+        const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts"
+        });
+
+        console.log(accounts)
+        console.log({accounts})
+
+    }
+
+    async function followUser(){
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+        const contract = new ethers.Contract(
+            address,
+            ABI,
+            signer
+        )
+
+        try{
+           const tx = await contract.follow([id], [0x0])
+           await tx.wait();
+           console.log("followed user successfully")
+        } catch (err) {
+
+        }
+    }
     // if(!profile) return null
 
     return(
         <>
+        <button style={{marginRight:"10px"}} onClick={connect}>Connect</button>
         {profile?.picture ? (<>
         <Image 
             width="200px"
@@ -51,6 +84,7 @@ const Profile = ()=>{
             <p>Followers: {profile?.stats?.totalFollowers}</p>
             <p>Following: {profile?.stats?.totalFollowing}</p>
         </div>
+        <button onClick={followUser}>Follow User</button>
         <div>
             {pubs.map((pub,index)=>(
                 <div key={index} style={{padding: '20px', borderTop: '1px solid #ededed' }}>
